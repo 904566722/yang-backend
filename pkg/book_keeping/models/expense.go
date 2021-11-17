@@ -1,5 +1,7 @@
 package models
 
-type Expense struct {
+import "yang-backend/pkg/command/models"
 
+type Expense struct {
+    models.CommandModel
 }

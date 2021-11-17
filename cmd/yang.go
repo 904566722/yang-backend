@@ -25,6 +25,7 @@ func main() {
         Compress: false,
     })
     db.InitDB()
+    db.InitTable()
     server.RegisterRoute(r)
 
 

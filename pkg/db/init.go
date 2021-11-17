@@ -7,6 +7,7 @@ import (
     "log"
     "os"
     "time"
+    "yang-backend/pkg/book_keeping/models"
     "yang-backend/pkg/config"
 )
 
@@ -30,4 +31,16 @@ func InitDB()  {
         log.Fatalf("gorm open db failed.\ndatabase path: %s\nerr:%v\n", config.Config.DbPath, err)
     }
     DB = db
+}
+
+// InitTable 初始化表
+func InitTable() {
+    err := DB.Set("gorm:table_options", "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;").AutoMigrate(
+        &models.Income{},
+        &models.IncomeCategory{},
+        &models.Expense{},
+    )
+    if err != nil {
+        log.Fatalf("gorm initialize table failed\nerr:%v\n", err)
+    }
 }
