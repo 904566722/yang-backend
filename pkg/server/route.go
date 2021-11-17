@@ -21,5 +21,6 @@ func testApiRegister(rg *gin.RouterGroup)  {
 
 func bookKeepingRegister(rg *gin.RouterGroup)  {
     rg.POST("/income", route_func.IncomeCreate)
+    rg.GET("/incomes", route_func.IncomeGets)
     rg.POST("/income/category", route_func.IncomeCategoryCreate)
 }
