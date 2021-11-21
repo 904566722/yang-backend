@@ -19,8 +19,17 @@ func testApiRegister(rg *gin.RouterGroup)  {
     })
 }
 
+// bookKeepingRegister 注册 记账模块 的api
 func bookKeepingRegister(rg *gin.RouterGroup)  {
     rg.POST("/income", route_func.IncomeCreate)
+    rg.GET("/income/:income_id", route_func.IncomeGet)
+    rg.POST("/income/:income_id", route_func.IncomeUpdate)
+    rg.DELETE("/income/:income_id", route_func.IncomeDelete)
     rg.GET("/incomes", route_func.IncomeGets)
+
     rg.POST("/income/category", route_func.IncomeCategoryCreate)
+    rg.GET("/income/category/:income_category_id", route_func.IncomeCategoryGet)
+    rg.GET("/income/categories", route_func.IncomeCategoryGets)
+    rg.POST("/income/category/:income_category_id", route_func.IncomeCategoryUpdate)
+    rg.DELETE("/income/category/:income_category_id", route_func.IncomeCategoryDelete)
 }

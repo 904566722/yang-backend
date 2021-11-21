@@ -25,7 +25,7 @@ func InternalError(err error) *ErrorResponse {
 }
 
 // LogErrAndResp 打印错误日志并返回错误信息
-//func LogErrAndResp(ctx *gin.Context, err error)  {
+//command_func LogErrAndResp(ctx *gin.Context, err error)  {
 //    errResp, ok := err.(*ErrorResponse)
 //    if !ok {
 //        errResp = InternalError(err)

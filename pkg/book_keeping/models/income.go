@@ -9,8 +9,12 @@ import (
 // Income 收入
 type Income struct {
 	models.CommandModel
-	Amount           float32 `json:"amount"`
-	IncomeCategoryID string  `json:"income_category_id" gorm:"size:256"`
+	Amount float32 `json:"amount"`
+	// 属于什么时候的收入
+	Year   int     `json:"year"`
+	Month  int     `json:"month"`
+
+	IncomeCategoryID string `json:"income_category_id" gorm:"size:256"`
 	IncomeCategory   IncomeCategory
 }
 
@@ -26,8 +30,7 @@ func (i *Income) BeforeCreate(tx *gorm.DB) (err error) {
 // IncomeCategory 收入类别
 type IncomeCategory struct {
 	models.CommandModel
-	Name    string `json:"name"`
-	Incomes []Income
+	Name string `json:"name"`
 }
 
 func (ic *IncomeCategory) TableName() string {
@@ -37,9 +40,4 @@ func (ic *IncomeCategory) TableName() string {
 func (ic *IncomeCategory) BeforeCreate(tx *gorm.DB) (err error) {
 	ic.ID = utils2.GenerateId("income-c", 10)
 	return
-}
-
-type IncomeAndIncomeCategory struct {
-	Income
-	Name string `json:"name"`
 }
