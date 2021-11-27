@@ -3,6 +3,7 @@ package server
 import (
     "github.com/gin-gonic/gin"
     "yang-backend/pkg/book_keeping/route_func"
+    "yang-backend/pkg/command/models"
     "yang-backend/pkg/ginlog"
 )
 
@@ -13,9 +14,43 @@ func RegisterRoute(r *gin.Engine)  {
 
 }
 
+type LoginOutput struct {
+    models.ResponseBase
+    Token string `json:"token"`
+}
+
+type UserInfoOutput struct {
+    models.ResponseBase
+    Data UserInfo `json:"data"`
+}
+
+type UserInfo struct {
+    Roles []string `json:"roles"`
+    Name string `json:"name"`
+    Avatar string `json:"avatar"`
+    Introduction string `json:"introduction"`
+}
+
 func testApiRegister(rg *gin.RouterGroup)  {
     rg.GET("/test", func(context *gin.Context) {
-        context.JSON(200, "test !!")
+        context.JSON(200, "yang project!")
+    })
+    rg.GET("/user/login", func(ctx *gin.Context) {
+        ctx.JSON(200, LoginOutput{
+            ResponseBase: models.Success,
+            Token: "124364765857dvxvx",
+        })
+    })
+    rg.GET("/user/info", func(ctx *gin.Context) {
+        ctx.JSON(200, UserInfoOutput{
+          ResponseBase: models.Success,
+          Data: UserInfo{
+              Roles: []string{"admin"},
+              Name: "admin",
+              Avatar: "https://avatar-static.segmentfault.com/732/311/732311852-5d5287d4a718b_huge128",
+              Introduction: "旸",
+          },
+        })
     })
 }
 
