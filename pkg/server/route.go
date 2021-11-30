@@ -62,6 +62,7 @@ func bookKeepingRegister(rg *gin.RouterGroup)  {
     rg.POST("/income/:income_id", route_func.IncomeUpdate)
     rg.POST("/outcome/:outcome_id", route_func.UpdateOutcome)
     rg.DELETE("/income/:income_id", route_func.IncomeDelete)
+    rg.DELETE("/outcome/:outcome_id", route_func.DeleteOutcome)
     rg.GET("/incomes", route_func.IncomeGets)
 
     rg.POST("/income/category", route_func.IncomeCategoryCreate)

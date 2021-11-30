@@ -13,6 +13,7 @@ var OutcomeGetFailed = models.ErrorResponse{ResponseBase: models.ResponseBase{Co
 var IncomeUpdateFailed = models.ErrorResponse{ResponseBase: models.ResponseBase{Code: "book_keeping.0103", Message: "update income failed"}}
 var OutcomeUpdateFailed = models.ErrorResponse{ResponseBase: models.ResponseBase{Code: "book_keeping.0103", Message: "update outcome failed"}}
 var IncomeDeleteFailed = models.ErrorResponse{ResponseBase: models.ResponseBase{Code: "book_keeping.0104", Message: "delete income failed"}}
+var OutcomeDeleteFailed = models.ErrorResponse{ResponseBase: models.ResponseBase{Code: "book_keeping.0104", Message: "delete outcome failed"}}
 var IncomeGetsFailed = models.ErrorResponse{ResponseBase: models.ResponseBase{Code: "book_keeping.0105", Message: "get incomes failed"}}
 var IncomeCountFailed = models.ErrorResponse{ResponseBase: models.ResponseBase{Code: "book_keeping.0106", Message: "count incomes failed"}}
 

@@ -36,6 +36,14 @@ func CreateOutcome(ctx *gin.Context)  {
     ctx.JSON(200, resp)
 }
 
+func DeleteOutcome(ctx *gin.Context)  {
+    id := ctx.Param("outcome_id")
+    if err := db.DB.Where("id = ?", id).Delete(&models.Outcome{}).Error; err != nil {
+        ctx.JSON(200, resp_code.OutcomeCreateFailed)
+        return
+    }
+    ctx.JSON(200, command_models.Success)
+}
 
 type UpdateOutComeInput struct {
     Outcome models.Outcome `json:"outcome"`
