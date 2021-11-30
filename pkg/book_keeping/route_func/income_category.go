@@ -119,11 +119,12 @@ func IncomeCategoryGet(ctx *gin.Context) {
 
 type IncomeCategoryGetsInput struct {
 	command_models.GetListModel
+	OpUnit string `json:"op_unit"`
 }
 
 type IncomeCategoryGetsOutput struct {
 	command_models.ResponseBase
-	IncomeCategories []models.IncomeCategory `json:"income_categories"`
+	Data []models.IncomeCategory `json:"data"`
 	Total            int64                   `json:"total"`
 }
 
@@ -140,15 +141,19 @@ func IncomeCategoryGets(ctx *gin.Context) {
 		ctx.JSON(200, resp_code.IncomeCategoryGetFailed)
 		return
 	}
-
+	if input.OpUnit != "" {
+		tx.Where("op_unit = ?", input.OpUnit)
+	}
 	var incomeCategories []models.IncomeCategory
 	if err := tx.Find(&incomeCategories).Error; err != nil {
 		ctx.JSON(200, resp_code.IncomeCategoryGetFailed)
 		return
 	}
+
+	tx.Count(&total)
 	output := IncomeCategoryGetsOutput{
 		ResponseBase: command_models.Success,
-		IncomeCategories: incomeCategories,
+		Data: incomeCategories,
 		Total: total,
 	}
 	ctx.JSON(200, output)

@@ -91,7 +91,6 @@ func IncomeUpdate(ctx *gin.Context)  {
 		ctx.JSON(200, resp_code.NotFoundResource)
 		return
 	} else if err != nil {
-		resp_code.IncomeGetFailed.Err = err
 		ctx.JSON(200, resp_code.IncomeGetFailed)
 		return
 	}
@@ -105,6 +104,7 @@ func IncomeUpdate(ctx *gin.Context)  {
 	}
 	if err := db.DB.Save(&input.Income).Error; err != nil {
 		ctx.JSON(200, resp_code.IncomeUpdateFailed)
+		return
 	}
 	output := IncomeUpdateOutput{
 		ResponseBase: command_models.Success,

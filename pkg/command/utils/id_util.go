@@ -16,3 +16,7 @@ func GenerateId(prefix string, randStrLen int) string {
     }
     return fmt.Sprintf("%s-%s", prefix, result)
 }
+
+func GenerateTime()  {
+    
+}

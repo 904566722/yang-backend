@@ -4,6 +4,7 @@ import (
 	"io"
 	"log"
 	"os"
+	"time"
 )
 
 type config struct {
@@ -26,6 +27,12 @@ const (
 	EnvKeyDBNAME      = "DB_NAME"
 	EnvKeyEnableDbLog = "ENABLE_DB_LOG"
 )
+
+const (
+	TimeLayoutStr = "2006-01-02 15:04:05"
+)
+
+var NilTime = time.Time{}
 
 var Config config
 

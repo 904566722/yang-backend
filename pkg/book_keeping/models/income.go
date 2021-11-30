@@ -31,6 +31,10 @@ func (i *Income) BeforeCreate(tx *gorm.DB) (err error) {
 type IncomeCategory struct {
 	models.CommandModel
 	Name string `json:"name"`
+	OpUnit string `json:"op_unit" gorm:"comment:操作单位，月：m， 日：d"`
+
+	// has many
+	Incomes []Income `json:"incomes" gorm:"foreignKey:IncomeCategoryID;references:ID"`
 }
 
 func (ic *IncomeCategory) TableName() string {
