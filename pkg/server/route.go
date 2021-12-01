@@ -73,6 +73,8 @@ func bookKeepingRegister(rg *gin.RouterGroup)  {
     rg.DELETE("/income/category/:income_category_id", route_func.IncomeCategoryDelete)
 
     rg.POST("/category/:op_unit", route_func.GetCtgs)
+
+    rg.POST("/collection", route_func.CreateCollection)
 }
 
 func commonRegister(rg *gin.RouterGroup)  {

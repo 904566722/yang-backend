@@ -38,6 +38,7 @@ func InitTable() {
     err := DB.Set("gorm:table_options", "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;").AutoMigrate(
         &models.Income{},
         &models.Outcome{},
+        &models.Collection{},
     )
     if err != nil {
         log.Fatalf("gorm initialize table failed\nerr:%v\n", err)
