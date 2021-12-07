@@ -8,24 +8,26 @@ import (
 )
 
 type config struct {
-	LogPath     string
-	DbUrl       string
-	DbUser      string
-	DbPw        string
-	DbPort      string
-	DbName      string
-	DbPath      string
-	EnableDbLog bool
+	LogPath         string
+	DbUrl           string
+	DbUser          string
+	DbPw            string
+	DbPort          string
+	DbName          string
+	DbPath          string
+	EnableDbLog     bool
+	ImageUploadPath string
 }
 
 const (
-	EnvKeyLogPath     = "LOG_PATH"
-	EnvKeyDBURL       = "DB_URL"
-	EnvKeyDBUSER      = "DB_USER"
-	EnvKeyDBPW        = "DB_PW"
-	EnvKeyDBPORT      = "DB_PORT"
-	EnvKeyDBNAME      = "DB_NAME"
-	EnvKeyEnableDbLog = "ENABLE_DB_LOG"
+	EnvKeyLogPath         = "LOG_PATH"
+	EnvKeyDBURL           = "DB_URL"
+	EnvKeyDBUSER          = "DB_USER"
+	EnvKeyDBPW            = "DB_PW"
+	EnvKeyDBPORT          = "DB_PORT"
+	EnvKeyDBNAME          = "DB_NAME"
+	EnvKeyEnableDbLog     = "ENABLE_DB_LOG"
+	EnvKeyImageUploadPath = "IMAGE_UPLOAD_PATH"
 )
 
 const (
@@ -71,5 +73,9 @@ func InitConfig() {
 		Config.EnableDbLog = true
 	} else if enableDbLog == "false" {
 		Config.EnableDbLog = false
+	}
+
+	if Config.ImageUploadPath = os.Getenv(EnvKeyImageUploadPath); Config.ImageUploadPath == "" {
+		log.Fatalf("get env %s failed\n", EnvKeyImageUploadPath)
 	}
 }

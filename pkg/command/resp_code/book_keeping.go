@@ -15,7 +15,9 @@ var OutcomeUpdateFailed = models.ErrorResponse{ResponseBase: models.ResponseBase
 var IncomeDeleteFailed = models.ErrorResponse{ResponseBase: models.ResponseBase{Code: "book_keeping.0104", Message: "delete income failed"}}
 var OutcomeDeleteFailed = models.ErrorResponse{ResponseBase: models.ResponseBase{Code: "book_keeping.0104", Message: "delete outcome failed"}}
 var IncomeGetsFailed = models.ErrorResponse{ResponseBase: models.ResponseBase{Code: "book_keeping.0105", Message: "get incomes failed"}}
+var OutcomeGetsFailed = models.ErrorResponse{ResponseBase: models.ResponseBase{Code: "book_keeping.0105", Message: "get outcomes failed"}}
 var IncomeCountFailed = models.ErrorResponse{ResponseBase: models.ResponseBase{Code: "book_keeping.0106", Message: "count incomes failed"}}
+var StatisticMonEatFailed = models.ErrorResponse{ResponseBase: models.ResponseBase{Code: "book_keeping.0106", Message: "statistic mon eat failed"}}
 
 
 // income category 收入类别

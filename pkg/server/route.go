@@ -64,6 +64,7 @@ func bookKeepingRegister(rg *gin.RouterGroup)  {
     rg.DELETE("/income/:income_id", route_func.IncomeDelete)
     rg.DELETE("/outcome/:outcome_id", route_func.DeleteOutcome)
     rg.GET("/incomes", route_func.IncomeGets)
+    rg.POST("/outcomes", route_func.GetOutcomes)
 
     rg.POST("/income/category", route_func.IncomeCategoryCreate)
     rg.GET("/income/category/:income_category_id", route_func.IncomeCategoryGet)
@@ -75,6 +76,8 @@ func bookKeepingRegister(rg *gin.RouterGroup)  {
     rg.POST("/category/:op_unit", route_func.GetCtgs)
 
     rg.POST("/collection", route_func.CreateCollection)
+    rg.POST("/upload/image", route_func.UploadImage)
+    rg.POST("/statistic/mon/eat", route_func.StatisticMonEat)
 }
 
 func commonRegister(rg *gin.RouterGroup)  {
