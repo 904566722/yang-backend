@@ -4,6 +4,7 @@ import (
     "github.com/gin-gonic/gin"
     "yang-backend/pkg/book_keeping/route_func"
     "yang-backend/pkg/command/models"
+    route_func2 "yang-backend/pkg/flow/route_func"
     "yang-backend/pkg/ginlog"
 )
 
@@ -11,6 +12,7 @@ func RegisterRoute(r *gin.Engine)  {
     v1 := r.Group("v1", ginlog.Ginzap(ginlog.ZapLogger, "ebs", true), ginlog.RecoveryWithZap(ginlog.ZapLogger, true))
     testApiRegister(v1)
     bookKeepingRegister(v1)
+    flowRegister(v1)
     commonRegister(v1)
 }
 
@@ -78,6 +80,19 @@ func bookKeepingRegister(rg *gin.RouterGroup)  {
     rg.POST("/collection", route_func.CreateCollection)
     rg.POST("/upload/image", route_func.UploadImage)
     rg.POST("/statistic/mon/eat", route_func.StatisticMonEat)
+}
+
+func flowRegister(rg *gin.RouterGroup)  {
+    rg.POST("/flow", route_func2.CreateFlow)
+    rg.POST("/water", route_func2.CreateWater)
+    rg.GET("/water/:water_id", route_func2.GetWater)
+    rg.POST("/water/clt", route_func2.CreateWaterClt)
+    rg.POST("/water/sort-klg", route_func2.CreateSortKlg)
+    rg.POST("/water/sort-klgs", route_func2.GetSortKlgs)
+    rg.POST("/water/todo", route_func2.CreateTodo)
+    rg.POST("/water/dev-test", route_func2.CreateDevTest)
+    rg.POST("/flows", route_func2.GetFlows)
+    rg.POST("/waters", route_func2.GetWaters)
 }
 
 func commonRegister(rg *gin.RouterGroup)  {

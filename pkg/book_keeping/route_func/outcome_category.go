@@ -2,7 +2,8 @@ package route_func
 
 import (
 	"github.com/gin-gonic/gin"
-	"yang-backend/pkg/book_keeping/models"
+    "strings"
+    "yang-backend/pkg/book_keeping/models"
     "yang-backend/pkg/command/command_func"
     command_models "yang-backend/pkg/command/models"
     "yang-backend/pkg/command/resp_code"
@@ -31,7 +32,10 @@ func GetOutcomeCategories(ctx *gin.Context) {
         ctx.JSON(200, resp_code.IncomeCategoryGetFailed)
         return
     }
-    if input.OpUnit != "" {
+    if input.OpUnit != "" && strings.Contains(input.OpUnit, "!") {
+        opUnit := strings.Replace(input.OpUnit, "!", "", -1)
+        tx.Where("op_unit != ?", opUnit)
+    } else if input.OpUnit != "" {
         tx.Where("op_unit = ?", input.OpUnit)
     }
     var outcomeCtgs []models.OutcomeCategory

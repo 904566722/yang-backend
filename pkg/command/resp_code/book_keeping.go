@@ -29,3 +29,17 @@ var IncomeCategoryUpdateFailed  = models.ErrorResponse{ResponseBase: models.Resp
 var IncomeCategoryDeleteFailed  = models.ErrorResponse{ResponseBase: models.ResponseBase{Code: "book_keeping.0204", Message: "delete income category failed"}}
 
 var CtgGetsFailed  = models.ErrorResponse{ResponseBase: models.ResponseBase{Code: "book_keeping.0301", Message: "get categories failed"}}
+
+
+var CreateFlowFailed = models.ErrorResponse{ResponseBase: models.ResponseBase{Code: "flow.0101", Message: "create flow failed"}}
+var CreateWaterFailed = models.ErrorResponse{ResponseBase: models.ResponseBase{Code: "flow.0101", Message: "create water failed"}}
+var CreateWaterCltFailed = models.ErrorResponse{ResponseBase: models.ResponseBase{Code: "flow.0101", Message: "create water collection failed"}}
+var CreateSortKlgFailed = models.ErrorResponse{ResponseBase: models.ResponseBase{Code: "flow.0101", Message: "create sort knowledge failed"}}
+var CreateTodoFailed = models.ErrorResponse{ResponseBase: models.ResponseBase{Code: "flow.0101", Message: "create todo failed"}}
+var CreateDevTestFailed = models.ErrorResponse{ResponseBase: models.ResponseBase{Code: "flow.0101", Message: "create dev test failed"}}
+var GetFlowsFailed = models.ErrorResponse{ResponseBase: models.ResponseBase{Code: "flow.0101", Message: "get flows failed"}}
+var GetWatersFailed = models.ErrorResponse{ResponseBase: models.ResponseBase{Code: "flow.0101", Message: "get waters failed"}}
+var GetWaterFailed = models.ErrorResponse{ResponseBase: models.ResponseBase{Code: "flow.0101", Message: "get water failed"}}
+var GetSortKlgsFailed = models.ErrorResponse{ResponseBase: models.ResponseBase{Code: "flow.0101", Message: "get sort klgs failed"}}
+
+

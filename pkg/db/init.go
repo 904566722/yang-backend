@@ -9,6 +9,7 @@ import (
     "time"
     "yang-backend/pkg/book_keeping/models"
     "yang-backend/pkg/config"
+    models2 "yang-backend/pkg/flow/models"
 )
 
 var DB *gorm.DB
@@ -39,6 +40,12 @@ func InitTable() {
         &models.Income{},
         &models.Outcome{},
         &models.Collection{},
+        &models2.Flow{},
+        &models2.Water{},
+        &models2.WaterCollection{},
+        &models2.SortKnowledge{},
+        &models2.Todo{},
+        &models2.DevTest{},
     )
     if err != nil {
         log.Fatalf("gorm initialize table failed\nerr:%v\n", err)
