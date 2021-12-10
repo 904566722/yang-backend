@@ -43,6 +43,7 @@ func InitTable() {
         &models2.Flow{},
         &models2.Water{},
         &models2.WaterCollection{},
+        &models2.WaterCltLabel{},
         &models2.SortKnowledge{},
         &models2.Todo{},
         &models2.DevTest{},

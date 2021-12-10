@@ -1,6 +1,7 @@
 package route_func
 
 import (
+	"errors"
 	"github.com/gin-gonic/gin"
 	"yang-backend/pkg/command/command_func"
 	models2 "yang-backend/pkg/command/models"
@@ -52,7 +53,15 @@ func CreateWaterClt(ctx *gin.Context) {
 		ctx.JSON(inputError.HttpCode(), inputError)
 		return
 	}
-	if err := db.DB.Create(&i.WaterClt).Error; err != nil {
+	// 添加标签
+	for index, _ := range i.WaterClt.WaterCltLabels {
+		if err := getWaterCltLabelByName(i.WaterClt.WaterCltLabels[index].Name, &i.WaterClt.WaterCltLabels[index]); err != nil {
+			ctx.JSON(200, resp_code.CreateWaterCltFailed)
+			return
+		}
+	}
+
+	if err := db.DB.Save(&i.WaterClt).Error; err != nil {
 		ctx.JSON(200, resp_code.CreateWaterCltFailed)
 		return
 	}
@@ -121,6 +130,17 @@ type CreateDevTestInput struct {
 type CreateDevTestOutput struct {
 	models2.ResponseBase
 	Data models.DevTest `json:"data"`
+}
+
+func getWaterCltLabelByName(name string, label *models.WaterCltLabel) error {
+	var labels []models.WaterCltLabel
+	if err := db.DB.Where("name = ?", name).Find(&labels).Error; err != nil {
+		return errors.New("get water clt label failed")
+	}
+	if len(labels) > 0 {
+		*label = labels[0]
+	}
+	return nil
 }
 
 func CreateDevTest(ctx *gin.Context) {
@@ -195,6 +215,82 @@ func GetWater(ctx *gin.Context) {
 	ctx.JSON(200, o)
 }
 
+type UpdateWaterInput struct {
+	Water models.Water `json:"water"`
+}
+type UpdateWaterOutput struct {
+	models2.ResponseBase
+	Water models.Water `json:"water"`
+}
+
+func UpdateWater(ctx *gin.Context) {
+	var waters []models.Water
+	id := ctx.Param("water_id")
+	if err := db.DB.Where("id = ?", id).Find(&waters).Error; err != nil {
+		ctx.JSON(200, resp_code.UpdateWaterFailed)
+		return
+	}
+	if len(waters) == 0 {
+		ctx.JSON(200, resp_code.NotFoundResource)
+		return
+	}
+	oldWater := waters[0]
+	var i UpdateWaterInput
+	i.Water = oldWater
+	if err := ctx.BindJSON(&i); err != nil {
+		inputError := models2.InputError(err)
+		ctx.JSON(inputError.HttpCode(), inputError)
+		return
+	}
+	if err := db.DB.Save(&i.Water).Error; err != nil {
+		ctx.JSON(200, resp_code.UpdateWaterFailed)
+		return
+	}
+	o := UpdateWaterOutput{
+		ResponseBase: models2.Success,
+		Water:        i.Water,
+	}
+	ctx.JSON(200, o)
+}
+
+type UpdateTodoInput struct {
+	Todo models.Todo `json:"todo"`
+}
+type UpdateTodoOutput struct {
+	models2.ResponseBase
+	Todo models.Todo `json:"todo"`
+}
+
+func UpdateTodo(ctx *gin.Context) {
+	var todos []models.Todo
+	id := ctx.Param("todo_id")
+	if err := db.DB.Where("id = ?", id).Find(&todos).Error; err != nil {
+		ctx.JSON(200, resp_code.UpdateWaterFailed)
+		return
+	}
+	if len(todos) == 0 {
+		ctx.JSON(200, resp_code.NotFoundResource)
+		return
+	}
+	oldTodo := todos[0]
+	var i UpdateTodoInput
+	i.Todo = oldTodo
+	if err := ctx.BindJSON(&i); err != nil {
+		inputError := models2.InputError(err)
+		ctx.JSON(inputError.HttpCode(), inputError)
+		return
+	}
+	if err := db.DB.Save(&i.Todo).Error; err != nil {
+		ctx.JSON(200, resp_code.UpdateTodoFailed)
+		return
+	}
+	o := UpdateTodoOutput{
+		ResponseBase: models2.Success,
+		Todo:        i.Todo,
+	}
+	ctx.JSON(200, o)
+}
+
 type GetSortKlgsInput struct {
 	models2.GetListModel
 	WaterID string `json:"water_id"`
@@ -227,9 +323,88 @@ func GetSortKlgs(ctx *gin.Context) {
 		return
 	}
 	o := GetSortKlgsOutput{
-	    ResponseBase: models2.Success,
-	    Data: sortKlgs,
-	    Total: total,
-    }
-    ctx.JSON(200, o)
+		ResponseBase: models2.Success,
+		Data:         sortKlgs,
+		Total:        total,
+	}
+	ctx.JSON(200, o)
+}
+
+type GetTodosInput struct {
+	models2.GetListModel
+	WaterID string `json:"water_id"`
+}
+type GetTodosOutput struct {
+	models2.ResponseBase
+	Data  []models.Todo `json:"data"`
+	Total int64         `json:"total"`
+}
+
+func GetTodos(ctx *gin.Context) {
+	var i GetTodosInput
+	if err := ctx.BindJSON(&i); err != nil {
+		inputError := models2.InputError(err)
+		ctx.JSON(inputError.HttpCode(), inputError)
+		return
+	}
+	tx, total, err := command_func.CommandGets(&models.Todo{}, i.GetListModel)
+	if err != nil {
+		ctx.JSON(200, resp_code.GetTodosFailed)
+		return
+	}
+	if i.WaterID != "" {
+		tx.Where("water_id = ?", i.WaterID)
+		tx.Count(&total)
+	}
+	var todos []models.Todo
+	if err := tx.Find(&todos).Error; err != nil {
+		ctx.JSON(200, resp_code.GetTodosFailed)
+		return
+	}
+	o := GetTodosOutput{
+		ResponseBase: models2.Success,
+		Data:         todos,
+		Total:        total,
+	}
+	ctx.JSON(200, o)
+}
+
+type GetWaterCltsInput struct {
+	models2.GetListModel
+	WaterId string `json:"water_id"`
+}
+
+type GetWaterCltsOutput struct {
+	models2.ResponseBase
+	Data  []models.WaterCollection `json:"data"`
+	Total int64                    `json:"total"`
+}
+
+func GetWaterClts(ctx *gin.Context) {
+	var i GetWaterCltsInput
+	if err := ctx.BindJSON(&i); err != nil {
+		inputError := models2.InputError(err)
+		ctx.JSON(inputError.HttpCode(), inputError)
+		return
+	}
+	tx, total, err := command_func.CommandGets(&models.WaterCollection{}, i.GetListModel)
+	if err != nil {
+		ctx.JSON(200, resp_code.GetWaterCltsFailed)
+		return
+	}
+	if i.WaterId != "" {
+		tx = tx.Where("water_id = ?", i.WaterId)
+		tx.Count(&total)
+	}
+	var waterClts []models.WaterCollection
+	if err := tx.Find(&waterClts).Error; err != nil {
+		ctx.JSON(200, resp_code.GetWaterCltsFailed)
+		return
+	}
+	o := GetWaterCltsOutput{
+		ResponseBase: models2.Success,
+		Data:         waterClts,
+		Total:        total,
+	}
+	ctx.JSON(200, o)
 }

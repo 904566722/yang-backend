@@ -45,6 +45,26 @@ type WaterCollection struct {
 
 	WaterID string `json:"water_id" gorm:"size:256"`
 	Water   Water
+	WaterCltLabels []WaterCltLabel `json:"water_clt_labels" gorm:"many2many:water_collection_labels"`
+}
+
+type WaterCltLabel struct {
+	models.CommandModel
+	Name string `json:"name"`
+	
+	//WaterCollectionID string `json:"water_collection_id" gorm:"size:256"`
+	WaterCollections []WaterCollection `json:"water_collection" gorm:"many2many:water_collection_labels"`
+}
+
+func (wcl *WaterCltLabel) TableName() string {
+	return "water_clt_label"
+}
+
+func (wcl *WaterCltLabel) BeforeCreate(tx *gorm.DB) (err error) {
+	if wcl.ID == "" {
+		wcl.ID = utils.GenerateId("water-clt-label", 10)
+	}
+	return
 }
 
 func (wc *WaterCollection) TableName() string {
@@ -52,7 +72,9 @@ func (wc *WaterCollection) TableName() string {
 }
 
 func (wc *WaterCollection) BeforeCreate(tx *gorm.DB) (err error) {
-	wc.ID = utils.GenerateId("water-clt", 10)
+	if wc.ID == "" {
+		wc.ID = utils.GenerateId("water-clt", 10)
+	}
 	return
 }
 

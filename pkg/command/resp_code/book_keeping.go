@@ -39,7 +39,11 @@ var CreateTodoFailed = models.ErrorResponse{ResponseBase: models.ResponseBase{Co
 var CreateDevTestFailed = models.ErrorResponse{ResponseBase: models.ResponseBase{Code: "flow.0101", Message: "create dev test failed"}}
 var GetFlowsFailed = models.ErrorResponse{ResponseBase: models.ResponseBase{Code: "flow.0101", Message: "get flows failed"}}
 var GetWatersFailed = models.ErrorResponse{ResponseBase: models.ResponseBase{Code: "flow.0101", Message: "get waters failed"}}
+var UpdateWaterFailed = models.ErrorResponse{ResponseBase: models.ResponseBase{Code: "flow.0101", Message: "update water failed"}}
+var UpdateTodoFailed = models.ErrorResponse{ResponseBase: models.ResponseBase{Code: "flow.0101", Message: "update todo failed"}}
 var GetWaterFailed = models.ErrorResponse{ResponseBase: models.ResponseBase{Code: "flow.0101", Message: "get water failed"}}
 var GetSortKlgsFailed = models.ErrorResponse{ResponseBase: models.ResponseBase{Code: "flow.0101", Message: "get sort klgs failed"}}
+var GetTodosFailed = models.ErrorResponse{ResponseBase: models.ResponseBase{Code: "flow.0101", Message: "get todos failed"}}
+var GetWaterCltsFailed = models.ErrorResponse{ResponseBase: models.ResponseBase{Code: "flow.0101", Message: "get water clts failed"}}
 
 

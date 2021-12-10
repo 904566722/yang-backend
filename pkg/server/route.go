@@ -89,10 +89,15 @@ func flowRegister(rg *gin.RouterGroup)  {
     rg.POST("/water/clt", route_func2.CreateWaterClt)
     rg.POST("/water/sort-klg", route_func2.CreateSortKlg)
     rg.POST("/water/sort-klgs", route_func2.GetSortKlgs)
+    rg.POST("/water/todos", route_func2.GetTodos)
     rg.POST("/water/todo", route_func2.CreateTodo)
     rg.POST("/water/dev-test", route_func2.CreateDevTest)
     rg.POST("/flows", route_func2.GetFlows)
     rg.POST("/waters", route_func2.GetWaters)
+    rg.POST("/water/clts", route_func2.GetWaterClts)
+
+    rg.POST("/water/update/:water_id", route_func2.UpdateWater)
+    rg.POST("/water/todo/update/:todo_id", route_func2.UpdateTodo)
 }
 
 func commonRegister(rg *gin.RouterGroup)  {

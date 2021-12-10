@@ -15,6 +15,8 @@ func CommandGets(model interface{}, input models2.GetListModel) (tx *gorm.DB, to
 	if input.ShowDelete == true {
 		tx = tx.Unscoped()
 	}
+	// 统计总数
+	tx.Count(&total)
 	// 分页
 	pageIndex := input.PageIndex
 	pageSize := input.PageSize
@@ -40,7 +42,6 @@ func CommandGets(model interface{}, input models2.GetListModel) (tx *gorm.DB, to
 	if input.BeginAt != nilTime && input.EndAt != nilTime {
 		tx.Where("created_at >= ? and created_at <= ?", input.BeginAt, input.EndAt)
 	}
-	// 统计总数
-	tx.Count(&total)
+
 	return tx, total, nil
 }
