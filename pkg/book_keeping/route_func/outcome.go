@@ -7,12 +7,14 @@ import (
 	"yang-backend/pkg/command/command_func"
 	command_models "yang-backend/pkg/command/models"
 	"yang-backend/pkg/command/resp_code"
+	"yang-backend/pkg/command/utils"
 	"yang-backend/pkg/config"
 	"yang-backend/pkg/db"
 )
 
 type CreateOutcomeInput struct {
-	Outcome models.Outcome `json:"outcome"`
+	Outcome   models.Outcome `json:"outcome"`
+	Yesterday bool           `json:"yesterday"`
 }
 
 type CreateOutcomeResponse struct {
@@ -26,6 +28,9 @@ func CreateOutcome(ctx *gin.Context) {
 		inputError := command_models.InputError(err)
 		ctx.JSON(inputError.HttpCode(), inputError)
 		return
+	}
+	if input.Yesterday {
+		input.Outcome.CreatedAt = utils.GetYesterday()
 	}
 	if err := db.DB.Create(&input.Outcome).Error; err != nil {
 		ctx.JSON(200, resp_code.OutcomeCreateFailed)

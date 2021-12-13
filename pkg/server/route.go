@@ -65,7 +65,7 @@ func bookKeepingRegister(rg *gin.RouterGroup)  {
     rg.POST("/outcome/:outcome_id", route_func.UpdateOutcome)
     rg.DELETE("/income/:income_id", route_func.IncomeDelete)
     rg.DELETE("/outcome/:outcome_id", route_func.DeleteOutcome)
-    rg.GET("/incomes", route_func.IncomeGets)
+    rg.POST("/incomes", route_func.IncomeGets)
     rg.POST("/outcomes", route_func.GetOutcomes)
 
     rg.POST("/income/category", route_func.IncomeCategoryCreate)
@@ -98,6 +98,8 @@ func flowRegister(rg *gin.RouterGroup)  {
 
     rg.POST("/water/update/:water_id", route_func2.UpdateWater)
     rg.POST("/water/todo/update/:todo_id", route_func2.UpdateTodo)
+    rg.POST("/water/clt/update/:water_clt_id", route_func2.UpdateWaterClt)
+    rg.DELETE("/water/clt/:water_clt_id", route_func2.DeleteWaterClt)
 }
 
 func commonRegister(rg *gin.RouterGroup)  {

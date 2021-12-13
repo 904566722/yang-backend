@@ -11,11 +11,11 @@ type Income struct {
 	models.CommandModel
 	Amount float32 `json:"amount"`
 	// 属于什么时候的收入
-	Year   int     `json:"year"`
-	Month  int     `json:"month"`
+	Year  int `json:"year"`
+	Month int `json:"month"`
 
-	IncomeCategoryID string `json:"income_category_id" gorm:"size:256"`
-	IncomeCategory   IncomeCategory
+	IncomeCategoryID string         `json:"income_category_id" gorm:"size:256"`
+	IncomeCategory   IncomeCategory `json:"income_category"`
 }
 
 func (i *Income) TableName() string {
@@ -30,7 +30,7 @@ func (i *Income) BeforeCreate(tx *gorm.DB) (err error) {
 // IncomeCategory 收入类别
 type IncomeCategory struct {
 	models.CommandModel
-	Name string `json:"name"`
+	Name   string `json:"name"`
 	OpUnit string `json:"op_unit" gorm:"comment:操作单位，月：m， 日：d"`
 
 	// has many

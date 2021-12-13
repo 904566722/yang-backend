@@ -265,7 +265,7 @@ func UpdateTodo(ctx *gin.Context) {
 	var todos []models.Todo
 	id := ctx.Param("todo_id")
 	if err := db.DB.Where("id = ?", id).Find(&todos).Error; err != nil {
-		ctx.JSON(200, resp_code.UpdateWaterFailed)
+		ctx.JSON(200, resp_code.UpdateTodoFailed)
 		return
 	}
 	if len(todos) == 0 {
@@ -286,7 +286,61 @@ func UpdateTodo(ctx *gin.Context) {
 	}
 	o := UpdateTodoOutput{
 		ResponseBase: models2.Success,
-		Todo:        i.Todo,
+		Todo:         i.Todo,
+	}
+	ctx.JSON(200, o)
+}
+
+type UpdateWaterCltInput struct {
+	WaterCollection models.WaterCollection `json:"water_collection"`
+}
+type UpdateWaterCltOutput struct {
+	models2.ResponseBase
+	WaterCollection models.WaterCollection `json:"water_collection"`
+}
+
+func UpdateWaterClt(ctx *gin.Context) {
+	var waterClts []models.WaterCollection
+	id := ctx.Param("water_clt_id")
+	if err := db.DB.Where("id = ?", id).Find(&waterClts).Error; err != nil {
+		ctx.JSON(200, resp_code.UpdateWaterFailed)
+		return
+	}
+	if len(waterClts) == 0 {
+		ctx.JSON(200, resp_code.NotFoundResource)
+		return
+	}
+	oldWaterClt := waterClts[0]
+	var i UpdateWaterCltInput
+	i.WaterCollection = oldWaterClt
+	if err := ctx.BindJSON(&i); err != nil {
+		inputError := models2.InputError(err)
+		ctx.JSON(inputError.HttpCode(), inputError)
+		return
+	}
+	if err := db.DB.Save(&i.WaterCollection).Error; err != nil {
+		ctx.JSON(200, resp_code.UpdateWaterCltFailed)
+		return
+	}
+	o := UpdateWaterCltOutput{
+		ResponseBase:    models2.Success,
+		WaterCollection: i.WaterCollection,
+	}
+	ctx.JSON(200, o)
+}
+
+type DeleteWaterCltOutput struct {
+	models2.ResponseBase
+}
+
+func DeleteWaterClt(ctx *gin.Context)  {
+	id := ctx.Param("water_clt_id")
+	if err := db.DB.Where("id = ?", id).Delete(&models.WaterCollection{}).Error; err != nil {
+		ctx.JSON(200, resp_code.DeleteWaterCltFailed)
+		return
+	}
+	o := DeleteWaterCltOutput{
+		ResponseBase: models2.Success,
 	}
 	ctx.JSON(200, o)
 }
@@ -396,11 +450,18 @@ func GetWaterClts(ctx *gin.Context) {
 		tx = tx.Where("water_id = ?", i.WaterId)
 		tx.Count(&total)
 	}
+	// 分页
+	pageIndex := i.PageIndex
+	pageSize := i.PageSize
+	if pageIndex != 0 && pageSize != 0 {
+		tx = tx.Offset((pageIndex - 1) * pageSize).Limit(pageSize)
+	}
 	var waterClts []models.WaterCollection
 	if err := tx.Find(&waterClts).Error; err != nil {
 		ctx.JSON(200, resp_code.GetWaterCltsFailed)
 		return
 	}
+
 	o := GetWaterCltsOutput{
 		ResponseBase: models2.Success,
 		Data:         waterClts,

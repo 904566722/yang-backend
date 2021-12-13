@@ -16,3 +16,9 @@ func ParseTime(ctx context.Context, format string, value string) (time.Time, err
     }
     return time, err
 }
+
+func GetYesterday() time.Time {
+    curTime := time.Now()
+    yesterdayTime := curTime.AddDate(0, 0, -1)
+    return yesterdayTime
+}

@@ -24,6 +24,7 @@ type Water struct {
 	models.CommandModel
 	Name     string `json:"name"`
 	OverView string `json:"over_view"` // 概览
+	Progress int    `json:"progress" gorm:"default:0"`
 
 	FlowID string `json:"flow_id" gorm:"size:256"`
 	Flow   Flow   `json:"flow"`
@@ -43,15 +44,15 @@ type WaterCollection struct {
 	models.CommandModel
 	Content string `json:"content"`
 
-	WaterID string `json:"water_id" gorm:"size:256"`
-	Water   Water
+	WaterID        string `json:"water_id" gorm:"size:256"`
+	Water          Water
 	WaterCltLabels []WaterCltLabel `json:"water_clt_labels" gorm:"many2many:water_collection_labels"`
 }
 
 type WaterCltLabel struct {
 	models.CommandModel
 	Name string `json:"name"`
-	
+
 	//WaterCollectionID string `json:"water_collection_id" gorm:"size:256"`
 	WaterCollections []WaterCollection `json:"water_collection" gorm:"many2many:water_collection_labels"`
 }

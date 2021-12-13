@@ -18,17 +18,26 @@ type GetListModel struct {
 	PageSize     int           `json:"page_size,omitempty"`
 	ShowDelete   bool          `json:"show_delete"`
 	Associations []Association `json:"associations"`
+	OrderBy      OrderBy       `json:"order_by"`
 	BeginAt      time.Time     `json:"begin_at"`
 	EndAt        time.Time     `json:"end_at"`
+	BelongYear        int    `json:"belong_year"`
+	BelongMon         int    `json:"belong_mon"`
+	BelongDay         int    `json:"belong_day"`
 }
 
+type OrderBy struct {
+	Column string `json:"column"`
+	Asc    bool   `json:"asc"`
+	Desc   bool   `json:"desc"`
+}
 
 // Association 加载关联关系
 type Association struct {
 	Name       string    `json:"name"`
-	BelongYear int       `json:"belong_year"`   // 可以传入属于的 年份、月份
+	BelongYear int       `json:"belong_year"` // 可以传入属于的 年份、月份
 	BelongMon  int       `json:"belong_mon"`
-	BeginAt    time.Time `json:"begin_at"`      // 也可以传入 开始时间、结束时间
+	BeginAt    time.Time `json:"begin_at"` // 也可以传入 开始时间、结束时间
 	EndAt      time.Time `json:"end_at"`
 }
 

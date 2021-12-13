@@ -1,6 +1,7 @@
 package command_func
 
 import (
+	"fmt"
 	"gorm.io/gorm"
 	"time"
 	models2 "yang-backend/pkg/command/models"
@@ -17,12 +18,6 @@ func CommandGets(model interface{}, input models2.GetListModel) (tx *gorm.DB, to
 	}
 	// 统计总数
 	tx.Count(&total)
-	// 分页
-	pageIndex := input.PageIndex
-	pageSize := input.PageSize
-	if pageIndex != 0 && pageSize != 0 {
-		tx = tx.Offset((pageIndex - 1) * pageSize).Limit(pageSize)
-	}
 	// 预加载
 	for _, association := range input.Associations {
 		if err := tx.Preload(association.Name).Error; err != nil {
@@ -37,7 +32,21 @@ func CommandGets(model interface{}, input models2.GetListModel) (tx *gorm.DB, to
 			tx.Preload(association.Name)
 		}
 	}
+	var nilOrderBy models2.OrderBy
+	if input.OrderBy != nilOrderBy {
+		var t string
+		if input.OrderBy.Asc {
+			t = "asc"
+		} else if input.OrderBy.Desc {
+			t = "desc"
+		}
+		tx.Order(fmt.Sprintf("%s %s", input.OrderBy.Column, t))
+	}
 	// 查询时间段
+	if input.BelongYear != 0 && input.BelongMon != 0 {
+		beginAt, endAt := config.GetMonRange(input.BelongYear, input.BelongMon)
+		tx.Where("created_at >= ? and created_at <= ?", beginAt, endAt)
+	}
 	nilTime := time.Time{}
 	if input.BeginAt != nilTime && input.EndAt != nilTime {
 		tx.Where("created_at >= ? and created_at <= ?", input.BeginAt, input.EndAt)
